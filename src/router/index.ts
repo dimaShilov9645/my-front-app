@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
-import OrderView from '@/views/OrderView.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -13,7 +12,7 @@ const router = createRouter({
     {
       path: '/order/:id',
       name: 'order',
-      component: () => OrderView,
+      component: () => import('@/views/OrderView.vue'),
     },
   ],
 })
