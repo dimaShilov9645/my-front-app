@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 import { useBaseApi } from '@/api/BaseApi.ts'
 import { type Ref, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import type { PaymentWebhook } from '@/api/types/typesApi.ts'
+import type { Api_Payment_Webhook_Dto } from '@/api/types/typesApi.ts'
 
 export const useProductsStore = defineStore('app-products', (): ProductsStoreInterface => {
   const router = useRouter()
@@ -25,7 +25,7 @@ export const useProductsStore = defineStore('app-products', (): ProductsStoreInt
     return response.data
   }
 
-  async function createOrder(productId: string) {
+  async function createOrder(productId: string, test?: boolean) {
     storageKey.value = `pending-purchase:${productId}`
 
     try {
@@ -36,11 +36,14 @@ export const useProductsStore = defineStore('app-products', (): ProductsStoreInt
         sessionStorage.setItem(storageKey.value, idempotencyKey)
       }
       const response = await api.post('/orders', { productId, idempotencyKey })
-      await router.push({
-        name: 'order',
-        params: { id: response.data.id },
-      })
-      console.log(response)
+      if (!test) {
+        await router.push({
+          name: 'order',
+          params: { id: response.data.id },
+        })
+      }
+
+      return response.data
     } catch (error) {
       console.error(error)
     }
@@ -52,7 +55,7 @@ export const useProductsStore = defineStore('app-products', (): ProductsStoreInt
     return response.data
   }
 
-  async function sendPaymentWebhook(payload: PaymentWebhook, signal: any) {
+  async function sendPaymentWebhook(payload: Api_Payment_Webhook_Dto, signal: any) {
     const response = await api.post(`/webhook/payment`, payload, { signal })
     return response.data
   }

@@ -5,22 +5,29 @@
     @focusout="onFocusOut"
   >
     <div class="header-row border-b border-[#f2f4f7] px-4 sm:px-6 xl:px-10">
-      <!-- В выбранном фрейме эта область пустая. Слот необязательный. -->
-      <div class="logo-slot hidden min-w-0 md:block"><slot name="logo" /></div>
-
+      <!--      <div class="logo-slot hidden min-w-0 md:block"><slot name="logo" /></div>-->
       <button
-        ref="catalogButton"
         type="button"
-        :id="`${id}-toggle`"
-        :aria-controls="id"
-        :aria-expanded="isOpen"
-        aria-label="Каталог"
-        class="cursor-pointer catalog-toggle flex h-11 w-11 shrink-0 items-center justify-center gap-2 rounded-[10px] bg-black text-sm font-semibold text-white transition-colors hover:bg-neutral-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-black focus-visible:outline-offset-4 md:w-[120px]"
-        @click="isOpen = !isOpen"
+        class="rounded-xl cursor-pointer bg-violet-600 px-2 py-2.5 w-24 font-medium text-white hover:bg-violet-700 disabled:opacity-50"
+        @click="goTest"
       >
-        <HeaderIcon name="catalog" class="h-5 w-5" />
-        <span class="hidden md:inline">Каталог</span>
+        Тест
       </button>
+      <div class="flex gap-4">
+        <button
+          ref="catalogButton"
+          type="button"
+          :id="`${id}-toggle`"
+          :aria-controls="id"
+          :aria-expanded="isOpen"
+          aria-label="Каталог"
+          class="cursor-pointer catalog-toggle flex h-11 w-11 shrink-0 items-center justify-center gap-2 rounded-[10px] bg-black text-sm font-semibold text-white transition-colors hover:bg-neutral-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-black focus-visible:outline-offset-4 md:w-[120px]"
+          @click="isOpen = !isOpen"
+        >
+          <HeaderIcon name="catalog" class="h-5 w-5" />
+          <span class="hidden md:inline">Каталог</span>
+        </button>
+      </div>
 
       <HeaderSearch
         v-model="query"
@@ -60,6 +67,7 @@ import HeaderIcon from './icons/HeaderIcon.vue'
 import HeaderSearch from './HeaderSearch.vue'
 import { catalogCategories } from './helpers/catalog.data'
 import type { CatalogCategory, CatalogSelection } from './helpers/types'
+import { useRouter } from 'vue-router'
 
 withDefaults(defineProps<{ id: string; categories: CatalogCategory[] }>(), {
   id: 'site-catalog',
@@ -74,10 +82,15 @@ const emit = defineEmits<{
   (event: 'category-change', categoryId: string): void
 }>()
 
+const router = useRouter()
 const root = ref<HTMLElement | null>(null)
 const catalogButton = ref<HTMLButtonElement | null>(null)
 const query = ref('')
 const isOpen = ref(false)
+
+const goTest = () => {
+  router.push({ name: 'test' })
+}
 
 function close(restoreFocus = false) {
   isOpen.value = false
