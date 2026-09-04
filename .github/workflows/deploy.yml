@@ -20,18 +20,27 @@ jobs:
           script: |
             set -e
 
-            echo "Updating frontend..."
+            echo "=== Update frontend ==="
 
             cd /opt/my-project/frontend
 
             git fetch origin
             git reset --hard origin/main
 
-            echo "Building frontend..."
+            echo "=== Build frontend ==="
 
             cd /opt/my-project
+
             docker compose up -d --build frontend
-            
+
+            echo "=== Check frontend container ==="
+
             docker compose ps frontend
+
+            echo "=== Check frontend HTTP ==="
+
+            sleep 3
+
             curl --fail http://127.0.0.1:8080 > /dev/null
-            echo "Frontend deployment successful"
+
+            echo "=== Frontend deploy success ==="
