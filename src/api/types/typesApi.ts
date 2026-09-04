@@ -18,7 +18,7 @@ export type Api_Product_Dto = {
   updatedAt: string
 }
 
-export type OrderStatus =
+export type Api_Order_Status =
   | 'created'
   | 'paid'
   | 'delivering'
@@ -27,13 +27,13 @@ export type OrderStatus =
   | 'out_of_stock'
   | 'delivery_failed'
 
-export type Order = {
+export type Api_Order_Dto = {
   id: string
   productId: string
   productName: string
   amount: number
   currency: string
-  status: OrderStatus
+  status: Api_Order_Status
   createdAt: string
   updatedAt: string
   delivery: {
@@ -44,7 +44,7 @@ export type Order = {
   } | null
 }
 
-export type PaymentWebhook = {
+export type Api_Payment_Webhook_Dto = {
   event_id: string
   order_id: string
   status: 'paid' | 'failed'

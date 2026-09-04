@@ -80,7 +80,6 @@ function selectCategory(categoryId: string) {
 }
 
 function buyProduct(product: Api_Product_Dto) {
-  alert(product.id)
   createOrder(product.id)
 }
 

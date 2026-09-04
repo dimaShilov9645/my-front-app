@@ -7,4 +7,5 @@ export default interface ProductsStoreInterface {
   createOrder(productId: string): Promise<any>
   getOrder(id: string, signal?: any): Promise<any>
   sendPaymentWebhook(payload: PaymentWebhook, signal: any): Promise<any>
+  deleteIdempotencyKey(): void
 }

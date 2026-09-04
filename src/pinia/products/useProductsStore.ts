@@ -1,7 +1,7 @@
 import type ProductsStoreInterface from '@/pinia/products/ProductsStoreInterface.ts'
 import { defineStore } from 'pinia'
 import { useBaseApi } from '@/api/BaseApi.ts'
-import { ref } from 'vue'
+import { type Ref, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import type { PaymentWebhook } from '@/api/types/typesApi.ts'
 
@@ -11,6 +11,13 @@ export const useProductsStore = defineStore('app-products', (): ProductsStoreInt
 
   const productsList = ref([])
 
+  const storageKey: Ref<string | null> = ref(null)
+
+  function deleteIdempotencyKey() {
+    if (!storageKey.value) return
+    sessionStorage.removeItem(storageKey.value)
+  }
+
   async function getProducts() {
     const response = await api.get('/products')
     console.log(response)
@@ -19,14 +26,14 @@ export const useProductsStore = defineStore('app-products', (): ProductsStoreInt
   }
 
   async function createOrder(productId: string) {
-    const storageKey = `pending-purchase:${productId}`
+    storageKey.value = `pending-purchase:${productId}`
 
     try {
-      let idempotencyKey = sessionStorage.getItem(storageKey)
+      let idempotencyKey = sessionStorage.getItem(storageKey.value)
 
       if (!idempotencyKey) {
         idempotencyKey = crypto.randomUUID()
-        sessionStorage.setItem(storageKey, idempotencyKey)
+        sessionStorage.setItem(storageKey.value, idempotencyKey)
       }
       const response = await api.post('/orders', { productId, idempotencyKey })
       await router.push({
@@ -56,5 +63,6 @@ export const useProductsStore = defineStore('app-products', (): ProductsStoreInt
     getProducts,
     getOrder,
     sendPaymentWebhook,
+    deleteIdempotencyKey,
   }
 })
