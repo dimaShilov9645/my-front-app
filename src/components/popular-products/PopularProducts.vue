@@ -80,10 +80,16 @@ function selectCategory(categoryId: string) {
 }
 
 function buyProduct(product: Api_Product_Dto) {
-  createOrder(product.id)
+  createOrder(product)
 }
 
 onMounted(() => {
+  // const catalogSource = new EventSource('http://localhost:3000/catalog/events')
+  //
+  // catalogSource.addEventListener('product.updated', (event) => {
+  //   console.log(JSON.parse(event.data))
+  // })
+
   getProducts()
 })
 </script>

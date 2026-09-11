@@ -4,6 +4,17 @@ export type ApiError = {
   data?: any
 }
 
+export type ApiResponse<T> = {
+  config: any
+  data: T
+  headers: any
+  request: any
+  status: number
+  statusText: string
+}
+
+export type ProductType = 'key' | 'topup' | 'subscription' | 'giftcard'
+
 export type Api_Product_Dto = {
   id: string
   name: string
@@ -11,9 +22,11 @@ export type Api_Product_Dto = {
   price: number
   currencySymbol?: string
   currency: string
-  isActive: true
+  isActive: boolean
   sku: string
-  type: string
+  type: ProductType
+  version: number
+  availableCount: number
   createdAt: string
   updatedAt: string
 }

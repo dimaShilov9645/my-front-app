@@ -30,6 +30,7 @@
         <del class="text-xs font-bold leading-4 text-[#9aa3b3]"
           >{{ formatPrice(product.price + 1000) }} {{ symbol }}</del
         >
+        <p>{{ product.availableCount }}</p>
       </div>
       <button
         type="button"

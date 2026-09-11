@@ -127,7 +127,7 @@ export default function (): OrderModel {
       error.value = ''
 
       continuePolling = result.status !== 'delivered' && result.status !== 'payment_failed'
-      if (continuePolling) deleteIdempotencyKey()
+      //if (continuePolling) deleteIdempotencyKey()
     } catch (err: ApiError | any) {
       if (pageController.signal.aborted) return
 
