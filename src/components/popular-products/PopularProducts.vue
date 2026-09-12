@@ -41,7 +41,7 @@ import type { Api_Product_Dto } from '@/api/types/typesApi.ts'
 import ProductCard from './ProductCard.vue'
 import ProductCategories from './ProductCategories.vue'
 
-const { getProducts, createOrder } = useProductsStore()
+const { getProducts, createOrder, getProduct } = useProductsStore()
 const { productsList } = storeToRefs(useProductsStore())
 
 interface Props {
@@ -83,14 +83,16 @@ function buyProduct(product: Api_Product_Dto) {
   createOrder(product)
 }
 
-onMounted(() => {
+onMounted(async () => {
   // const catalogSource = new EventSource('http://localhost:3000/catalog/events')
   //
   // catalogSource.addEventListener('product.updated', (event) => {
   //   console.log(JSON.parse(event.data))
   // })
 
-  getProducts()
+  await getProducts()
+  const id = productsList.value[3].id
+  await getProduct(id)
 })
 </script>
 

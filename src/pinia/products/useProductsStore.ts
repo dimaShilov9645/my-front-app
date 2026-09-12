@@ -33,6 +33,11 @@ export const useProductsStore = defineStore('app-products', (): ProductsStoreInt
     return response.data
   }
 
+  async function getProduct(id: string) {
+    const response = await api.get<Api_Product_Dto>(`/products/${id}`)
+    return response.data
+  }
+
   async function createOrder(product: Api_Product_Dto, test?: boolean) {
     storageKey.value = `pending-purchase:${product.id}`
 
@@ -152,6 +157,7 @@ export const useProductsStore = defineStore('app-products', (): ProductsStoreInt
     createOrder,
     connectEvents,
     getProducts,
+    getProduct,
     getOrder,
     sendPaymentWebhook,
     deleteIdempotencyKey,

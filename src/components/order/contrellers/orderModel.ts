@@ -29,7 +29,7 @@ export type StatusInfo = {
 export default function (): OrderModel {
   const route = useRoute()
 
-  const { getOrder, sendPaymentWebhook, deleteIdempotencyKey } = useProductsStore()
+  const { getOrder, sendPaymentWebhook } = useProductsStore()
 
   let pageController = new AbortController()
   let timer: ReturnType<typeof setTimeout> | undefined
@@ -78,7 +78,7 @@ export default function (): OrderModel {
           event_id: `evt_${crypto.randomUUID()}`,
           order_id: order.value.id,
           status,
-          amount: order.value.amount / 100,
+          amount: order.value.amount,
           currency: order.value.currency,
           created_at: new Date().toISOString(),
         }

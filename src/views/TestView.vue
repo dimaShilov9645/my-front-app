@@ -58,7 +58,7 @@ import { useProductsStore } from '@/pinia/products/useProductsStore.ts'
 
 import type { Api_Order_Dto, Api_Payment_Webhook_Dto } from '@/api/types/typesApi.ts'
 
-const { createOrder, getOrder, sendPaymentWebhook } = useProductsStore()
+const { createOrder, getOrder, sendPaymentWebhook, getProduct } = useProductsStore()
 
 const productId = ref('')
 const running = ref(false)
@@ -136,11 +136,9 @@ async function runTest() {
      */
     log('Отправляем 50 запросов создания заказа…')
 
-    const orders = await parallel(
-      Array.from({ length: 50 }, () => createOrder(productId.value, true)),
-    )
+    const product = await getProduct(productId.value)
 
-    debugger
+    const orders = await parallel(Array.from({ length: 50 }, () => createOrder(product, true)))
 
     const orderIds = new Set(orders.map((order) => order.id))
 
